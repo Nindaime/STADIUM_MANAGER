@@ -26,7 +26,17 @@
 </template>
 <script setup>
 import { ref } from 'vue'
+import { useCounterStore } from '../stores/example-store'
+const store = useCounterStore()
+
 let text = ref('Hello World')
+let password = ref('')
+let isPwd = ref(true)
+let email = ref('')
+function login() {
+  store.login(email.value, password.value)
+  console.log(password.value, email.value)
+}
 </script>
 
 <style scoped></style>
