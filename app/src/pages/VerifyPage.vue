@@ -1,9 +1,29 @@
 <script setup>
 import { ref } from 'vue'
-let text = ref('Lorem')
-let model = ref('English')
-let options = ['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle']
-let checked = true
+import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
+import { useCounterStore } from '../stores/example-store'
+const $router = useRouter()
+const $q = useQuasar()
+let emailCode = ref('')
+const store = useCounterStore()
+let vcode = store.vcode
+function proceed() {
+  if (emailCode.value == vcode) {
+    store.registerVerified()
+  } else {
+    triggerNegative()
+    setTimeout(() => {
+      $router.push('/login')
+    }, 8000)
+  }
+}
+function triggerNegative() {
+  $q.notify({
+    type: 'negative',
+    message: 'Verification Code Invalid',
+  })
+}
 </script>
 
 <template>
@@ -21,8 +41,8 @@ let checked = true
       <div class="col-md-5 col-sm-10 col-xs-md">
         <div class="col">
           <q-input
-            v-model="text"
-            outline
+            v-model="emailCode"
+            outlined
             label="Enter Verification Code"
             class="q-mb-lg"
           />
@@ -41,7 +61,7 @@ let checked = true
         <div class="flex items-center">
           <span>
             Wrong Email
-            <router-link to="/login" class="text-primary">Change</router-link>
+            <router-link to="/signup" class="text-primary">Change</router-link>
           </span>
         </div>
       </div>
@@ -53,6 +73,7 @@ let checked = true
           label="Submit"
           class="q-py-sm"
           no-caps
+          @click="proceed()"
           style="width: 100%;"
         />
       </div>
