@@ -5,6 +5,8 @@
         <q-btn flat label="Logo" />
         <q-space />
 
+        <q-btn flat label="Edit" no-caps to="/edit" />
+
         <q-btn label="Log in" no-caps push to="/login" class="q-mx-xs" />
         <q-btn color="primary" label="Try Lytch" no-caps push to="/signup" />
       </q-toolbar>
@@ -30,7 +32,7 @@ export default defineComponent({
       leftDrawerOpen,
       store,
       isUserLoggedIn,
-      
+
       tab: ref(''),
     }
   },

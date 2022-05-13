@@ -35,7 +35,7 @@ export const useCounterStore = defineStore('counter', {
       await signInWithEmailAndPassword(auth, email, password)
         .then(() => {
           this.isUserLoggedIn = true
-          higherThis.$router.push({ path: '/dashboard' })
+          higherThis.$router.push('/dashboard')
         })
         .catch((error) => {
           const errorCode = error.code

@@ -12,4 +12,4 @@ export default boot(({ router, store }) => {
     } else next()
   })
 })
- */
+  */
