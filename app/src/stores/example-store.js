@@ -5,7 +5,7 @@ import {
   db,
   doc,
   setDoc,
-  collection,
+  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   auth,
 } from '../boot/firebase.js'
@@ -31,11 +31,17 @@ export const useCounterStore = defineStore('counter', {
       this.counter++
     },
     async login(email, password) {
-      const docRef = await addDoc(collection(db, 'users'), {
-        password,
-        email,
-      })
-      console.log('Document written with ID: ', docRef.id)
+      let higherThis = this
+      await signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          this.isUserLoggedIn = true
+          higherThis.$router.push({ path: '/dashboard' })
+        })
+        .catch((error) => {
+          const errorCode = error.code
+          const errorMessage = error.message
+          console.log(errorCode, errorMessage)
+        })
     },
 
     register(email, password, firstname, lastname) {

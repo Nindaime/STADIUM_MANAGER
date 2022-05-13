@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated v-if="!isUserLoggedIn">
       <q-toolbar class="bg-primary text-white shadow-2">
         <q-btn flat label="Logo" />
         <q-space />
@@ -25,9 +25,12 @@ export default defineComponent({
   setup() {
     const leftDrawerOpen = ref(false)
     const store = useCounterStore()
+    const isUserLoggedIn = store.isUserLoggedIn
     return {
       leftDrawerOpen,
       store,
+      isUserLoggedIn,
+      
       tab: ref(''),
     }
   },
