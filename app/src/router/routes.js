@@ -7,7 +7,7 @@ const routes = [
       { path: '/login', component: () => import('pages/LoginPage.vue') },
       { path: '/signup', component: () => import('pages/SignupPage.vue') },
       { path: '/verify', component: () => import('pages/VerifyPage.vue') },
-      { path: '/dashboard', cotmponent: () => import('pages/DashboardPage.vue') },
+      { path: '/dashboard', component: () => import('pages/DashboardPage.vue') },
     ],
   },
 

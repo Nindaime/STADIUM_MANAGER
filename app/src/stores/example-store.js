@@ -1,15 +1,25 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { nanoid } from 'nanoid'
-import { db, addDoc, collection } from '../boot/firebase.js'
+import {
+  db,
+  doc,
+  setDoc,
+  collection,
+  createUserWithEmailAndPassword,
+  auth,
+} from '../boot/firebase.js'
 
 export const useCounterStore = defineStore('counter', {
   state: () => ({
     counter: 0,
     userSignedIn: false,
+    isUserLoggedIn: false,
     newUserDetails: {
       email: null,
-      password: null
+      password: null,
+      firstname: null,
+      lastname: null,
     },
     vcode: null,
   }),
@@ -28,16 +38,39 @@ export const useCounterStore = defineStore('counter', {
       console.log('Document written with ID: ', docRef.id)
     },
 
-    register(email, password) {
-      this.sendValidationEmail(email);
+    register(email, password, firstname, lastname) {
+      this.sendValidationEmail(email)
       this.newUserDetails.email = email
       this.newUserDetails.password = password
+      this.newUserDetails.firstname = firstname
+      this.newUserDetails.lastname = lastname
     },
-    registerVerified() {
-      console.log(this.newUserDetails);
+    async registerVerified() {
+      let { email, password, firstname, lastname } = this.newUserDetails
+      this.isUserLoggedIn = true
+
+      await createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const uid = userCredential.user.uid
+          setDoc(doc(db, 'users', uid), {
+            email,
+            password,
+            firstname,
+            lastname,
+          }).catch((error) => {
+            const errorCode = error.code
+            const errorMessage = error.message
+            console.log(errorCode, errorMessage)
+          })
+        })
+        .catch((error) => {
+          const errorCode = error.code
+          const errorMessage = error.message
+          console.log(errorCode, errorMessage)
+        })
+      this.$router.push({ path: '/dashboard' })
     },
     sendValidationEmail(email) {
-      console.log(email, 'me')
       let vCode = nanoid(6)
       this.vcode = vCode
       axios
@@ -48,7 +81,6 @@ export const useCounterStore = defineStore('counter', {
         .catch((error) => {
           console.log(error)
         })
-      
     },
   },
 })

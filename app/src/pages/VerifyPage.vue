@@ -15,7 +15,7 @@ function proceed() {
     triggerNegative()
     setTimeout(() => {
       $router.push('/login')
-    }, 8000)
+    }, 16000)
   }
 }
 function triggerNegative() {
@@ -29,7 +29,7 @@ function triggerNegative() {
 <template>
   <div class="q-gutter-y-sm">
     <div class="col-12 text-center q-mt-xl q-mb-md">
-      <div class="text-h4 col text-h5">Verify Email</div>
+      <div class="text-h4 col text-h5">Verify Email {{ vcode }}</div>
     </div>
     <div class="row text-center q-mt-md q-mb-lg justify-center">
       <div class="text-body1 col-5">

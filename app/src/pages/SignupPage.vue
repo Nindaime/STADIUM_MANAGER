@@ -6,6 +6,8 @@
           <div class="q-mb-md">
             <span class="text-h6">Register</span>
           </div>
+          <q-input outlined v-model="firstname" label="First Name" class="q-mb-md" />
+          <q-input outlined v-model="lastname" label="Last Name" class="q-mb-md" />
           <q-input outlined v-model="email" label="Email" class="q-mb-md" />
           <q-input
             v-model="password"
@@ -67,18 +69,21 @@ const $router = useRouter()
 
 let text = ref('Hello World')
 let email = ref('')
+let firstname = ref('')
+let lastname = ref('')
 let password = ref('')
 let confirmPassword = ref('')
 let isPwd = ref(true)
 let isPwdConfirm = ref(true)
 let isDisabled = ref(true)
 function register() {
-  store.register(email.value, password.value);
+  store.register(email.value, password.value, firstname.value, lastname.value);
   $router.push('/verify')
 }
 function flipDisabled() {
   isDisabled.value = false
 }
+
 
 watch(confirmPassword, (newValue, oldValue) => {
   if (newValue == password.value) {

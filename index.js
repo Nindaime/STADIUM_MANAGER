@@ -10,7 +10,6 @@ app.use(bodyparser.json())
 
 require('dotenv').config()
 app.get('/', (req, res) => {
-  console.log('Yo')
   res.send('HEllo')
 })
 
