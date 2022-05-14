@@ -1,6 +1,9 @@
 <script setup>
 import { useQuasar } from 'quasar'
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
+
+import { useCounterStore } from '../stores/example-store'
+const store = useCounterStore()
 
 const name = ref(null)
 const location = ref(null)
@@ -11,34 +14,41 @@ const numberOfSeats = ref(null)
 const price = ref(null)
 const seatsRemaining = ref(null)
 const $q = useQuasar()
-const age = ref(null)
 const model = ref(null)
 const options = ref(['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'])
 
-const accept = ref(false)
+let props = reactive({
+  name,
+  location,
+  date,
+  teamA,
+  teamB,
+  numberOfSeats,
+  price,
+  seatsRemaining,
+})
 
 function onSubmit() {
-  if (accept.value !== true) {
-    $q.notify({
-      color: 'red-5',
-      textColor: 'white',
-      icon: 'warning',
-      message: 'You need to accept the license and terms first',
-    })
-  } else {
-    $q.notify({
-      color: 'green-4',
-      textColor: 'white',
-      icon: 'cloud_done',
-      message: 'Submitted',
-    })
-  }
+  store.uploadEvent(props)
+  // if (accept.value !== true) {
+  //   $q.notify({
+  //     color: 'red-5',
+  //     textColor: 'white',
+  //     icon: 'warning',
+  //     message: 'You need to accept the license and terms first',
+  //   })
+  // } else {
+  //   $q.notify({
+  //     color: 'green-4',
+  //     textColor: 'white',
+  //     icon: 'cloud_done',
+  //     message: 'Submitted',
+  //   })
+  // }
 }
 
 function onReset() {
   name.value = null
-  age.value = null
-  accept.value = false
 }
 </script>
 <template>
@@ -124,8 +134,8 @@ function onReset() {
           label="Number of Seats"
           lazy-rules
           :rules="[
-            (val) => (val !== null && val !== '') || 'Please type your age',
-            (val) => (val > 0 && val < 100) || 'Please type a real age',
+            (val) => (val !== null && val !== '') || 'Please type something',
+            // (val) => (val > 0 && val < 100) || 'Please type a real age',
           ]"
         />
         <q-input
@@ -135,8 +145,8 @@ function onReset() {
           label="Amount per Seat"
           lazy-rules
           :rules="[
-            (val) => (val !== null && val !== '') || 'Please type your age',
-            (val) => (val > 0 && val < 100) || 'Please type a real age',
+            (val) => (val !== null && val !== '') || 'Please type something',
+            // (val) => (val > 0 && val < 100) || 'Please type a real age',
           ]"
         />
         <q-input
@@ -146,15 +156,15 @@ function onReset() {
           label="Number of Seat Remaining"
           lazy-rules
           :rules="[
-            (val) => (val !== null && val !== '') || 'Please type your age',
-            (val) => (val > 0 && val < 100) || 'Please type a real age',
+            (val) => (val !== null && val !== '') || 'Please type something',
+            // (val) => (val > 0 && val < 100) || 'Please type a real age',
           ]"
         />
         <q-select
           v-model="model"
           outlined
           :options="options"
-          label="Standard"
+          label="List of all Stadium"
         />
 
         <div class="row justify-center q-mt-md">

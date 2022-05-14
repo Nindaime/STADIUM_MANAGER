@@ -43,7 +43,28 @@ export const useCounterStore = defineStore('counter', {
           console.log(errorCode, errorMessage)
         })
     },
-
+    uploadEvent(props) {
+      const {
+        name,
+        location,
+        date,
+        teamA,
+        teamB,
+        numberOfSeats,
+        price,
+        seatsRemaining,
+      } = props
+      console.log(
+        name,
+        location,
+        date,
+        teamA,
+        teamB,
+        numberOfSeats,
+        price,
+        seatsRemaining,
+      )
+    },
     register(email, password, firstname, lastname) {
       this.sendValidationEmail(email)
       this.newUserDetails.email = email
