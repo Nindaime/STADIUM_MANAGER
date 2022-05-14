@@ -5,6 +5,8 @@ import {
   db,
   doc,
   setDoc,
+  addDoc,
+  collection,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   auth,
@@ -43,7 +45,7 @@ export const useCounterStore = defineStore('counter', {
           console.log(errorCode, errorMessage)
         })
     },
-    uploadEvent(props) {
+    async uploadEvent(props) {
       const {
         name,
         location,
@@ -54,7 +56,7 @@ export const useCounterStore = defineStore('counter', {
         price,
         seatsRemaining,
       } = props
-      console.log(
+      const docRef = await addDoc(collection(db, 'events'), {
         name,
         location,
         date,
@@ -63,7 +65,14 @@ export const useCounterStore = defineStore('counter', {
         numberOfSeats,
         price,
         seatsRemaining,
-      )
+      }).catch((error) => {
+        const errorCode = error.code
+        const errorMessage = error.message
+        console.log(errorCode, errorMessage)
+      })
+
+      console.log('Document written with ID: ', docRef.id)
+  
     },
     register(email, password, firstname, lastname) {
       this.sendValidationEmail(email)

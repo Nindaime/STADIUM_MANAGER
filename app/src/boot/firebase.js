@@ -5,7 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth'
-import { collection, setDoc, doc } from 'firebase/firestore'
+import { collection, setDoc, doc, addDoc } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: process.env.API_KEY,
@@ -26,5 +26,6 @@ export {
   createUserWithEmailAndPassword,
   setDoc,
   doc,
+  addDoc,
   signInWithEmailAndPassword,
 }

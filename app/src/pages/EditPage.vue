@@ -13,6 +13,7 @@ const teamB = ref(null)
 const numberOfSeats = ref(null)
 const price = ref(null)
 const seatsRemaining = ref(null)
+const blob = ref(null)
 const $q = useQuasar()
 const model = ref(null)
 const options = ref(['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'])
@@ -56,13 +57,11 @@ function onReset() {
     <div class="text-center text-h4">Add Events</div>
     <div class="q-pa-md q-mx-auto" style="max-width: 400px;">
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-        <q-input
-          v-model="name"
+           <q-select
+          v-model="model"
           outlined
-          class="q-my-sm"
-          label="Name of Stadiums"
-          lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+          :options="options"
+          label="Stadium Name"
         />
         <q-input
           outlined
@@ -108,6 +107,7 @@ function onReset() {
 
         <q-uploader
           url="http://localhost:4444/upload"
+          v-model="blob"
           style="max-width: 350px;"
           label="Event Thumbnail"
         />
@@ -160,12 +160,7 @@ function onReset() {
             // (val) => (val > 0 && val < 100) || 'Please type a real age',
           ]"
         />
-        <q-select
-          v-model="model"
-          outlined
-          :options="options"
-          label="List of all Stadium"
-        />
+     
 
         <div class="row justify-center q-mt-md">
           <q-btn label="Upload" type="submit" color="primary" />

@@ -15,6 +15,10 @@ const routes = [
         path: '/edit',
         component: () => import('pages/EditPage.vue'),
       },
+      {
+        path: '/edit-stadiums',
+        component: () => import('pages/StadiumsPage.vue'),
+      },
     ],
   },
 
