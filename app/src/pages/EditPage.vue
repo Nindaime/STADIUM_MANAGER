@@ -1,8 +1,8 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { ref, reactive } from 'vue'
-
 import { useCounterStore } from '../stores/example-store'
+
 const store = useCounterStore()
 
 const name = ref(null)
@@ -13,7 +13,7 @@ const teamB = ref(null)
 const numberOfSeats = ref(null)
 const price = ref(null)
 const seatsRemaining = ref(null)
-const blob = ref(null)
+const fileBlob = ref('')
 const $q = useQuasar()
 const model = ref(null)
 const options = ref(['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'])
@@ -22,46 +22,42 @@ let props = reactive({
   name,
   location,
   date,
+  fileBlob,
   teamA,
   teamB,
   numberOfSeats,
   price,
   seatsRemaining,
 })
-
 function onSubmit() {
-  store.uploadEvent(props)
-  // if (accept.value !== true) {
-  //   $q.notify({
-  //     color: 'red-5',
-  //     textColor: 'white',
-  //     icon: 'warning',
-  //     message: 'You need to accept the license and terms first',
-  //   })
-  // } else {
-  //   $q.notify({
-  //     color: 'green-4',
-  //     textColor: 'white',
-  //     icon: 'cloud_done',
-  //     message: 'Submitted',
-  //   })
-  // }
+  console.log(fileBlob.value)
+  // store.uploadEvent(props)
 }
-
+function addedThumbnail(evt) {
+  console.log(evt)
+  console.log(fileBlob.value)
+}
 function onReset() {
   name.value = null
+}
+function previewImage(event) {
+  // let blob = URL.createObjectURL(event.target.files[0])
+  console.log(event)
 }
 </script>
 <template>
   <div class="q-px-sm q-mt-lg">
     <div class="text-center text-h4">Add Events</div>
+
     <div class="q-pa-md q-mx-auto" style="max-width: 400px;">
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-           <q-select
-          v-model="model"
+        <q-input
           outlined
-          :options="options"
-          label="Stadium Name"
+          v-model="name"
+          class="q-my-md"
+          label="Name"
+          lazy-rules
+          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
         />
         <q-input
           outlined
@@ -104,13 +100,20 @@ function onReset() {
             </q-icon>
           </template>
         </q-input>
-
-        <q-uploader
+        <!-- <q-uploader
           url="http://localhost:4444/upload"
-          v-model="blob"
-          style="max-width: 350px;"
-          label="Event Thumbnail"
-        />
+          style="max-width: 300px;"
+          @added="addedThumbnail(files)"
+        /> -->
+        <q-file
+          filled
+          bottom-slots
+          v-model="fileBlob"
+          @input="previewImage(file)"
+          label="Thumbnail"
+        ></q-file>
+
+              <input hidden class="file-input" ref="fileInput" type="file" @input="onSelectFile" />
         <q-input
           outlined
           v-model="teamA"
@@ -160,8 +163,12 @@ function onReset() {
             // (val) => (val > 0 && val < 100) || 'Please type a real age',
           ]"
         />
-     
-
+        <q-select
+          v-model="model"
+          outlined
+          :options="options"
+          label="Stadium Name"
+        />
         <div class="row justify-center q-mt-md">
           <q-btn label="Upload" type="submit" color="primary" />
           <q-btn

@@ -19,6 +19,7 @@ const routes = [
         path: '/edit-stadiums',
         component: () => import('pages/StadiumsPage.vue'),
       },
+      { path: '/test', component: () => import('pages/TestComponents.vue') },
     ],
   },
 
